@@ -66,6 +66,25 @@ app.get("/articles", async (req,res) => {
   }
 })
 
+app.get('/articleDetail/:id', async (req,res) => {
+  try {
+    const id = req.params.id;
+ 
+    const article = await Article.findById(id);
+    console.log(article);
+    res.json(article); 
+  } catch (error) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur lors du chargement des articles", error: err });
+  }
+})
+
+app.get('/article', (req, res) => {
+  res.header("Content-Type", "text/html");
+  console.log(__dirname);
+  res.sendFile(__dirname + '/public/article.html');
+})
+
 app.listen(3000, () => {
   console.log('Serveur en ligne http://localhost:3000');
 });

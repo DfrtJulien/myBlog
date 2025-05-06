@@ -29,10 +29,32 @@ if(document.getElementById('showArticles')){
           console.log(article);
           articleContainer.innerHTML += `
           <div class="article">
-            <h3>${article.title}</h3>
-            <p>${article.content}</p>
+            <a href="/article?id=${article._id}">
+              <h3>${article.title}</h3>
+              <p>${article.content}</p>
+            </a>
           </div>`
         })
+      })
+      .catch(error => console.error('Erreur lors du fetch :', error));
+  });
+ 
+}
+
+if(document.getElementById('showArticle')){
+  window.addEventListener('load', (event) => {
+    const articleContainer = document.getElementById('articleContainer');
+    const id = new URLSearchParams(window.location.search).get('id');
+    fetch(`http://localhost:3000/articleDetail/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        
+       articleContainer.innerHTML = `
+       <div>
+          <h3>${data.title}</h3>
+          <p>${data.content}</p>
+          <a href="/">Revenir a l'accueil</a>
+       </div>`
       })
       .catch(error => console.error('Erreur lors du fetch :', error));
   });

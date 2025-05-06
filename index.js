@@ -27,21 +27,19 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.header("Content-Type", "text/html");
 
  
   res.sendFile(__dirname + '/index.html');
 
- 
 });
+
 
 app.get('/addArticle', (req, res) => {
   res.header("Content-Type", "text/html");
   console.log(__dirname);
   res.sendFile(__dirname + '/public/addArticle.html');
-
- 
 });
 
 app.post('/articles', (req, res) => {
@@ -55,6 +53,17 @@ app.post('/articles', (req, res) => {
     console.log(err);
   }
 
+})
+
+app.get("/articles", async (req,res) => {
+  try {
+    const articles = await Article.find(); 
+    console.log(articles);
+    res.json(articles); 
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur lors du chargement des articles", error: err });
+  }
 })
 
 app.listen(3000, () => {

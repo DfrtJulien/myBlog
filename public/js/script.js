@@ -1,3 +1,5 @@
+
+
 if(document.getElementById('articleForm')){
   document.getElementById('articleForm').addEventListener('submit', (event) => {
     event.preventDefault();
@@ -42,9 +44,12 @@ if(document.getElementById('showArticles')){
 }
 
 if(document.getElementById('showArticle')){
+  const articleContainer = document.getElementById('articleContainer');
+  const deleteBtn = document.getElementById('deleteArticle');
   window.addEventListener('load', (event) => {
-    const articleContainer = document.getElementById('articleContainer');
+   
     const id = new URLSearchParams(window.location.search).get('id');
+    
     fetch(`http://localhost:3000/articleDetail/${id}`)
       .then(response => response.json())
       .then(data => {
@@ -54,9 +59,26 @@ if(document.getElementById('showArticle')){
           <h3>${data.title}</h3>
           <p>${data.content}</p>
           <a href="/">Revenir a l'accueil</a>
-       </div>`
+       </div>`;
+       deleteBtn.setAttribute('data-id-article', data._id);
       })
       .catch(error => console.error('Erreur lors du fetch :', error));
   });
  
+
+  deleteBtn.addEventListener('click', () => {
+  const idArticle = deleteBtn.getAttribute('data-id-article');
+  console.log(idArticle);
+  
+  fetch(`http://localhost:3000/delete/${idArticle}`)
+  .then(data => {
+   
+    window.location.href = '/';
+  })
+  .catch(err => console.error('Erreur :', err));
+    
+  
+})
+
+
 }

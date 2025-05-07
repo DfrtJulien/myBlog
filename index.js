@@ -85,6 +85,17 @@ app.get('/article', (req, res) => {
   res.sendFile(__dirname + '/public/article.html');
 })
 
+app.get('/delete/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const article = await Article.findByIdAndDelete(id)
+    res.json(article)
+  } catch (error) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur lors du chargement des articles", error: err });
+  }
+})
+
 app.listen(3000, () => {
   console.log('Serveur en ligne http://localhost:3000');
 });
